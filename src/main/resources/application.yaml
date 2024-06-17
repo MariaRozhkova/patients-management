@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hospital
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  mvc:
+    converters:
+      preferred-json-mapper: gson
+  liquibase:
+    change-log: ${LIQUIBASE_CHANGELOG_PATH:classpath:migrations.xml}
+    liquibase-schema: patients_management
+    database-change-log-lock-table: changeloglock
+    database-change-log-table: changelog
+
+server:
+  port: ${LISTEN_PORT:8080}
