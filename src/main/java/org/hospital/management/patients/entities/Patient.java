@@ -1,6 +1,5 @@
 package org.hospital.management.patients.entities;
 
-import org.hospital.management.patients.enums.Gender;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,6 +15,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hospital.management.patients.enums.Gender;
 
 @Entity
 @Table(name = "patients", schema = "patients_management")
@@ -23,6 +25,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
+@FieldNameConstants
 public class Patient {
 
     @Id
@@ -38,6 +41,10 @@ public class Patient {
 
     @Column(name = "birth_date", nullable = false)
     private LocalDateTime birthDate;
+
+    @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     @Override
     public boolean equals(Object o) {

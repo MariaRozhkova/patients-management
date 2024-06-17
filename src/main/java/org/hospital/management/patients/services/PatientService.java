@@ -1,13 +1,13 @@
 package org.hospital.management.patients.services;
 
+import java.util.UUID;
+import org.hospital.management.patients.dtos.PaginationResponse;
 import org.hospital.management.patients.dtos.PatientCreateDto;
 import org.hospital.management.patients.dtos.PatientDto;
-import java.util.List;
-import java.util.UUID;
 
 public interface PatientService {
 
-    List<PatientDto> findAll();
+    PaginationResponse<PatientDto> findAll(String nextPageToken, int pageSize);
 
     PatientDto findById(UUID id);
 
