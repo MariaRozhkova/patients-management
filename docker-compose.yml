@@ -1,0 +1,54 @@
+version: '3.4'
+
+services:
+  patients-management:
+    image: patients-management:latest
+    restart: unless-stopped
+    environment:
+      - "POSTGRES_HOST=${POSTGRES_HOST}"
+      - "POSTGRES_PORT=${POSTGRES_PORT}"
+      - "KEYCLOAK_HOST=${KEYCLOAK_HOST}"
+      - "KEYCLOAK_PORT=${KEYCLOAK_PORT}"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - keycloak
+    networks:
+      - app-network
+  keycloak:
+    image: bitnami/keycloak:24.0.2
+    restart: unless-stopped
+    environment:
+      - "KEYCLOAK_CREATE_ADMIN_USER=true"
+      - "KEYCLOAK_DATABASE_VENDOR=postgresql"
+      - "KEYCLOAK_ADMIN_USER=${KEYCLOAK_ADMIN_USER}"
+      - "KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}"
+      - "KEYCLOAK_DATABASE_HOST=${POSTGRES_HOST}"
+      - "KEYCLOAK_DATABASE_PORT=${POSTGRES_PORT}"
+      - "KEYCLOAK_DATABASE_NAME=${POSTGRES_DB}"
+      - "KEYCLOAK_DATABASE_SCHEMA=${KEYCLOAK_DATABASE_SCHEMA}"
+      - "KEYCLOAK_DATABASE_USER=${POSTGRES_USER}"
+      - "KEYCLOAK_DATABASE_PASSWORD=${POSTGRES_PASSWORD}"
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+    environment:
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+      - "POSTGRES_DB=${POSTGRES_DB}"
+
+networks:
+  app-network:
