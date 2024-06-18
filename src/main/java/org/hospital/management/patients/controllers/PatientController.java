@@ -1,5 +1,11 @@
 package org.hospital.management.patients.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +29,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("patients")
+@Tag(name = "Patients", description = "Patients APIs")
 public class PatientController {
 
     private final PatientService patientService;
 
+    @Operation(summary = "Retrieves patients using pagination token")
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            content = {@Content(
+                schema = @Schema(implementation = PatientDto.class),
+                mediaType = "application/json"
+            )}
+        ),
+        @ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "401", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "403", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    })
     @GetMapping
     @PreAuthorize("hasAnyRole('PATIENT', 'PRACTITIONER')")
     public ResponseEntity<PaginationResponse<PatientDto>> findAll(
@@ -36,6 +57,20 @@ public class PatientController {
         return ResponseEntity.ok(patientService.findAll(nextPageToken, pageSize));
     }
 
+    @Operation(summary = "Retrieves a patient by Id")
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            content = {@Content(
+                schema = @Schema(implementation = PatientDto.class),
+                mediaType = "application/json"
+            )}
+        ),
+        @ApiResponse(responseCode = "401", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "403", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "404", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    })
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('PATIENT', 'PRACTITIONER')")
     public ResponseEntity<PatientDto> findById(@PathVariable("id") UUID id) {
@@ -44,6 +79,20 @@ public class PatientController {
         return ResponseEntity.ok(patient);
     }
 
+    @Operation(summary = "Creates a patient")
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            content = {@Content(
+                schema = @Schema(implementation = PatientDto.class),
+                mediaType = "application/json"
+            )}
+        ),
+        @ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "401", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "403", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    })
     @PostMapping
     @PreAuthorize("hasRole('PRACTITIONER')")
     public ResponseEntity<PatientDto> create(@RequestBody @Valid PatientCreateDto patientCreateDto) {
@@ -52,6 +101,21 @@ public class PatientController {
         return new ResponseEntity<>(createdPatient, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Updates a patient by id")
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            content = {@Content(
+                schema = @Schema(implementation = PatientDto.class),
+                mediaType = "application/json"
+            )}
+        ),
+        @ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "401", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "403", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "404", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    })
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('PRACTITIONER')")
     public ResponseEntity<PatientDto> update(
@@ -63,6 +127,20 @@ public class PatientController {
         return ResponseEntity.ok(updatedPatient);
     }
 
+    @Operation(summary = "Deletes a patient by id")
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            content = {@Content(
+                schema = @Schema(implementation = PatientDto.class),
+                mediaType = "application/json"
+            )}
+        ),
+        @ApiResponse(responseCode = "401", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "403", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "404", content = {@Content(schema = @Schema())}),
+        @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('PRACTITIONER')")
     public ResponseEntity<PatientDto> deleteById(@PathVariable("id") UUID id) {

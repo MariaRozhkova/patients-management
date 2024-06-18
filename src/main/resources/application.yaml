@@ -23,16 +23,20 @@ spring:
       client:
         registration:
           keycloak:
-            client-id: login-app
+            client-id: ${KEYCLOAK_CLIENT_ID:patients-management-app}
             authorization-grant-type: authorization_code
             scope: openid
         provider:
           keycloak:
-            issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8081}/realms/HospitalKeycloak
+            issuer-uri: http://${KEYCLOAK_HOST:keycloak}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:PatientsManagementRealm}
             user-name-attribute: preferred_username
       resourceserver:
         jwt:
-          issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8081}/realms/HospitalKeycloak
+          issuer-uri: http://${KEYCLOAK_HOST:keycloak}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:PatientsManagementRealm}
 
 server:
-  port: ${LISTEN_PORT:8080}
+  port: ${LISTEN_PORT:8083}
+
+openApi:
+  server:
+    url: ${OPENAPI_SERVER_URL:http://localhost:8083}
