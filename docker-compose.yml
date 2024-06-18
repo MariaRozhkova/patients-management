@@ -10,28 +10,31 @@ services:
       - "KEYCLOAK_HOST=${KEYCLOAK_HOST}"
       - "KEYCLOAK_PORT=${KEYCLOAK_PORT}"
     ports:
-      - "8080:8080"
+      - "8083:8080"
     depends_on:
       - postgres
       - keycloak
     networks:
       - app-network
   keycloak:
-    image: bitnami/keycloak:24.0.2
+    image: quay.io/keycloak/keycloak:25.0.0
     restart: unless-stopped
     environment:
+      - "KC_DB=postgres"
       - "KEYCLOAK_CREATE_ADMIN_USER=true"
-      - "KEYCLOAK_DATABASE_VENDOR=postgresql"
-      - "KEYCLOAK_ADMIN_USER=${KEYCLOAK_ADMIN_USER}"
+      - "KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN_USER}"
       - "KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}"
-      - "KEYCLOAK_DATABASE_HOST=${POSTGRES_HOST}"
-      - "KEYCLOAK_DATABASE_PORT=${POSTGRES_PORT}"
-      - "KEYCLOAK_DATABASE_NAME=${POSTGRES_DB}"
-      - "KEYCLOAK_DATABASE_SCHEMA=${KEYCLOAK_DATABASE_SCHEMA}"
-      - "KEYCLOAK_DATABASE_USER=${POSTGRES_USER}"
-      - "KEYCLOAK_DATABASE_PASSWORD=${POSTGRES_PASSWORD}"
+      - "KC_HOSTNAME=${KEYCLOAK_HOST}"
+      - "KC_PORT=8080"
+      - "KC_DB_URL=jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
+      - "KC_DB_SCHEMA=${KEYCLOAK_DATABASE_SCHEMA}"
+      - "KC_DB_USERNAME=${POSTGRES_USER}"
+      - "KC_DB_PASSWORD=${POSTGRES_PASSWORD}"
+    command: start-dev --import-realm
+    volumes:
+      - ./imports:/opt/keycloak/data/import
     ports:
-      - "8081:8080"
+      - "8080:8080"
     depends_on:
       - postgres
     networks:
