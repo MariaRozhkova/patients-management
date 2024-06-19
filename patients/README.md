@@ -17,7 +17,7 @@ Run service from docker:
 3. Run `docker-compose up'
 
 Once the services are up and running Keycloak can be access via the following link: <br />
-`http://localhost:8080/`. <br />
+`http://localhost:8080/`. (default username and password - admin)<br />
 Realm for patients management (with client and supported roles) is already imported to Keycloak 
 and no need to create it manually. 
 But new user with 'practitioner' role should be created manually. To do it go to 
