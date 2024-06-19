@@ -84,7 +84,45 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"patient3\",\r\n    \"gender1\": \"female\",\r\n    \"birthDate1\": \"2023-01-13T18:25:43\"\r\n}",
+					"raw": "{\r\n    \"name\": \"patient3\",\r\n    \"gender\": \"female\",\r\n    \"birthDate\": \"2023-01-13T18:25:43\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/patients",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"patients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create patient Copy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"patient3\",\r\n    \"gender\": \"female\",\r\n    \"birthDate\": \"2023-01-13T18:25:43\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -196,6 +234,45 @@
 					"path": [
 						"patients",
 						"90efc674-03f3-44b5-b90a-cadc1a522688"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update patient",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"patient5\",\r\n    \"gender\": \"female\",\r\n    \"birthDate\": \"2023-01-13T18:25:43\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/patients/7766da48-740a-4096-917a-a3b65e411c71",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"patients",
+						"7766da48-740a-4096-917a-a3b65e411c71"
 					]
 				}
 			},
