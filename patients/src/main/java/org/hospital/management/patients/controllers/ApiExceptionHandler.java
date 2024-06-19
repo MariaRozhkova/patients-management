@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hospital.management.patients.dtos.ErrorMessage;
 import org.hospital.management.patients.exceptions.EntityNotFoundException;
-import org.hospital.management.patients.exceptions.IncorrectNextPageTokenException;
+import org.hospital.management.patients.exceptions.IncorrectPaginationTokenException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +46,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler({
         HttpMessageNotReadableException.class,
         HttpRequestMethodNotSupportedException.class,
-        IncorrectNextPageTokenException.class
+        IncorrectPaginationTokenException.class
     })
     public ResponseEntity<ErrorMessage> handleBadRequestException(Exception exception) {
         return createResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);

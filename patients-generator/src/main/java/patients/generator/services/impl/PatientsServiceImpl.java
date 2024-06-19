@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import patients.generator.dtos.PatientCreateDto;
 import patients.generator.enums.Gender;
+import patients.generator.exceptions.PatientsCreationException;
 import patients.generator.services.PatientsService;
 
 @RequiredArgsConstructor
@@ -22,12 +23,13 @@ public class PatientsServiceImpl implements PatientsService {
     private static final String CONTENT_TYPE_HEADER_NAME = "Content-type";
     private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     private static final int CREATED_HTTP_STATUS_CODE = 201;
+    private static final int USERS_COUNT = 100;
 
     private final Gson gson;
     private final HttpClient httpClient;
 
     public void generatePatients(String accessToken) {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < USERS_COUNT; i++) {
             generatePatient(i, accessToken);
         }
     }
@@ -43,7 +45,7 @@ public class PatientsServiceImpl implements PatientsService {
         var requestBody = gson.toJson(patientToCreate);
 
         try {
-            HttpResponse<String> httpResponse = httpClient.send(
+            var httpResponse = httpClient.send(
                 prepareHttpRequest(requestBody, accessToken),
                 HttpResponse.BodyHandlers.ofString()
             );
@@ -51,14 +53,19 @@ public class PatientsServiceImpl implements PatientsService {
             if (statusCode == CREATED_HTTP_STATUS_CODE) {
                 log.info("Created patient with name = {}", patientToCreate.getName());
             } else {
-                log.info(
+                log.error(
                     "Patient with name = {} was not created. Response status code: {}",
                     patientToCreate.getName(),
                     statusCode
                 );
             }
         } catch (IOException | InterruptedException ex) {
-            log.error("Error occurred while creating patient", ex);
+            log.error(
+                "Error occurred while creating patient with name = {}",
+                patientToCreate.getName(),
+                ex
+            );
+            throw new PatientsCreationException("Error occurred while creating patient", ex);
         }
     }
 

@@ -1,10 +1,10 @@
 package org.hospital.management.patients.services;
 
-import org.hospital.management.patients.dtos.PageTokenDto;
+import org.hospital.management.patients.dtos.PaginationTokenDto;
 
 public interface PageTokenService {
 
-    String encode(PageTokenDto pageTokenDto);
+    String encode(PaginationTokenDto paginationTokenDto);
 
-    PageTokenDto decode(String nextPageToken);
+    PaginationTokenDto decode(String nextPageToken);
 }

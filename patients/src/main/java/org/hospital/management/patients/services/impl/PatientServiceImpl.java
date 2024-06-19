@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.hospital.management.patients.dtos.PageTokenDto;
+import org.hospital.management.patients.dtos.PaginationTokenDto;
 import org.hospital.management.patients.dtos.PaginationResponse;
 import org.hospital.management.patients.dtos.PatientCreateDto;
 import org.hospital.management.patients.dtos.PatientDto;
@@ -60,8 +60,8 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientDto create(PatientCreateDto patient) {
-        var patientToSave = modelMapper.map(patient, Patient.class);
+    public PatientDto create(PatientCreateDto patientDto) {
+        var patientToSave = modelMapper.map(patientDto, Patient.class);
         var savedPatient = patientRepository.save(patientToSave);
 
         return modelMapper.map(savedPatient, PatientDto.class);
@@ -101,7 +101,7 @@ public class PatientServiceImpl implements PatientService {
         var size = patients.size();
         if (size == pageSize && CollectionUtils.isNotEmpty(patients)) {
             var lastPatient = patients.get(size - 1);
-            var pageTokenDto = new PageTokenDto(
+            var pageTokenDto = new PaginationTokenDto(
                 lastPatient.getId(),
                 lastPatient.getCreatedAt()
             );
