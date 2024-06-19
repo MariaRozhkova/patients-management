@@ -10,6 +10,9 @@ import jakarta.validation.constraints.Past;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Dto for creating patient.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

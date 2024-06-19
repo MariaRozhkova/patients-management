@@ -28,13 +28,13 @@ public class PatientsServiceImpl implements PatientsService {
     private final Gson gson;
     private final HttpClient httpClient;
 
-    public void generatePatients(String accessToken) {
+    public void createPatients(String accessToken) {
         for (int i = 0; i < USERS_COUNT; i++) {
-            generatePatient(i, accessToken);
+            createPatient(i, accessToken);
         }
     }
 
-    private void generatePatient(int i, String accessToken) {
+    private void createPatient(int i, String accessToken) {
         var birthDate = LocalDateTime.of(1990, 1, 1, 0, 0, 0)
             .plusDays(i);
         var patientToCreate = new PatientCreateDto(
@@ -45,27 +45,31 @@ public class PatientsServiceImpl implements PatientsService {
         var requestBody = gson.toJson(patientToCreate);
 
         try {
-            var httpResponse = httpClient.send(
-                prepareHttpRequest(requestBody, accessToken),
-                HttpResponse.BodyHandlers.ofString()
-            );
-            var statusCode = httpResponse.statusCode();
-            if (statusCode == CREATED_HTTP_STATUS_CODE) {
-                log.info("Created patient with name = {}", patientToCreate.getName());
-            } else {
-                log.error(
-                    "Patient with name = {} was not created. Response status code: {}",
-                    patientToCreate.getName(),
-                    statusCode
-                );
-            }
+            createPatient(accessToken, requestBody, patientToCreate.getName());
         } catch (IOException | InterruptedException ex) {
-            log.error(
-                "Error occurred while creating patient with name = {}",
-                patientToCreate.getName(),
-                ex
-            );
             throw new PatientsCreationException("Error occurred while creating patient", ex);
+        }
+    }
+
+    private void createPatient(
+        String accessToken,
+        String requestBody,
+        String name
+    ) throws IOException, InterruptedException {
+        var httpResponse = httpClient.send(
+            prepareHttpRequest(requestBody, accessToken),
+            HttpResponse.BodyHandlers.ofString()
+        );
+        var statusCode = httpResponse.statusCode();
+        if (statusCode == CREATED_HTTP_STATUS_CODE) {
+            log.info("Created patient with name = {}", name);
+        } else {
+            String message = String.format(
+                "Patient with name = %s was not created. Response status code: %s",
+                name,
+                statusCode
+            );
+            throw new PatientsCreationException(message);
         }
     }
 

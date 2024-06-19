@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Patient API.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("patients")
@@ -34,6 +37,9 @@ public class PatientController {
 
     private final PatientService patientService;
 
+    /**
+     * Find all patients.
+     */
     @Operation(summary = "Retrieves patients using pagination token")
     @ApiResponses({
         @ApiResponse(
@@ -57,6 +63,9 @@ public class PatientController {
         return ResponseEntity.ok(patientService.findAll(nextPageToken, pageSize));
     }
 
+    /**
+     * Find patient by id.
+     */
     @Operation(summary = "Retrieves a patient by Id")
     @ApiResponses({
         @ApiResponse(
@@ -79,6 +88,9 @@ public class PatientController {
         return ResponseEntity.ok(patient);
     }
 
+    /**
+     * Creates patient.
+     */
     @Operation(summary = "Creates a patient")
     @ApiResponses({
         @ApiResponse(
@@ -101,6 +113,9 @@ public class PatientController {
         return new ResponseEntity<>(createdPatient, HttpStatus.CREATED);
     }
 
+    /**
+     * Updates patient.
+     */
     @Operation(summary = "Updates a patient by id")
     @ApiResponses({
         @ApiResponse(
@@ -127,6 +142,9 @@ public class PatientController {
         return ResponseEntity.ok(updatedPatient);
     }
 
+    /**
+     * Deletes patient by id.
+     */
     @Operation(summary = "Deletes a patient by id")
     @ApiResponses({
         @ApiResponse(

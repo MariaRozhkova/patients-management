@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * OpenApi configuration.
+ */
 @Configuration
 public class OpenAPIConfig {
 
@@ -28,8 +31,13 @@ public class OpenAPIConfig {
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     String authURL;
 
+    /**
+     * Creates open api bean.
+     *
+     * @return configured OpenApi bean
+     */
     @Bean
-    public OpenAPI myOpenAPI() {
+    public OpenAPI openApi() {
         var localServer = new Server();
         localServer.setUrl(serverUrl);
         localServer.setDescription("Server URL in local environment");

@@ -21,6 +21,9 @@ import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hospital.management.patients.enums.Gender;
 
+/**
+ * Entity class for patient.
+ */
 @Entity
 @Table(name = "patients", schema = "patients_management")
 @Getter

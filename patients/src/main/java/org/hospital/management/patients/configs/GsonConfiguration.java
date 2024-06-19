@@ -9,9 +9,17 @@ import org.hospital.management.patients.enums.Gender;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Gson configuration.
+ */
 @Configuration
 public class GsonConfiguration {
 
+    /**
+     * Creates gson bean with needed type adapters.
+     *
+     * @return configured Gson bean
+     */
     @Bean
     public Gson gson() {
         return new GsonBuilder()

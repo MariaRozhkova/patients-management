@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import patients.generator.enums.Gender;
 
+/**
+ * Dto for creating patient.
+ */
 @Data
 @AllArgsConstructor
 public class PatientCreateDto {

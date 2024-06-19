@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * A repository for {@link Patient}.
+ */
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, UUID> {
 

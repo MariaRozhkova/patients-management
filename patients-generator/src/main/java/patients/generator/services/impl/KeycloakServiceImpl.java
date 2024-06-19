@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import patients.generator.dtos.KeycloakAuthResponse;
+import patients.generator.dtos.AuthResponse;
 import patients.generator.exceptions.KeycloakServiceException;
 import patients.generator.services.KeycloakService;
 
@@ -44,7 +44,7 @@ public class KeycloakServiceImpl implements KeycloakService {
             if (statusCode == 200) {
                 var authResponse = gson.fromJson(
                     httpResponse.body(),
-                    KeycloakAuthResponse.class
+                    AuthResponse.class
                 );
 
                 return authResponse.getAccessToken();

@@ -1,3 +1,5 @@
+package patients.generator;
+
 import com.google.gson.GsonBuilder;
 import java.net.http.HttpClient;
 import java.time.LocalDateTime;
@@ -22,6 +24,6 @@ public class PatientsGeneratorApplication {
         var accessToken = keycloakService.fetchAccessToken(usernameFromArg, passwordFromArg);
 
         var patientsService = new PatientsServiceImpl(gson, httpClient);
-        patientsService.generatePatients(accessToken);
+        patientsService.createPatients(accessToken);
     }
 }

@@ -1,6 +1,12 @@
 package patients.generator.services;
 
+/**
+ * Service for working with Keycloak server.
+ */
 public interface KeycloakService {
 
-    String fetchAccessToken(String username, String password); // not secure
+    /**
+     * Fetches access token from Keycloak server based on username and password.
+     */
+    String fetchAccessToken(String username, String password);
 }

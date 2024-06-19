@@ -1,6 +1,9 @@
 package patients.generator.exceptions;
 
-public class KeycloakServiceException extends RuntimeException{
+/**
+ * An exception can be thrown while working with Keycloak service.
+ */
+public class KeycloakServiceException extends RuntimeException {
 
     public KeycloakServiceException(String message) {
         super(message);

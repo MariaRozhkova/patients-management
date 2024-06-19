@@ -1,6 +1,12 @@
 package patients.generator.services;
 
+/**
+ * Service to work with patients.
+ */
 public interface PatientsService {
 
-    void generatePatients(String accessToken);
+    /**
+     * Creates patients via REST Api.
+     */
+    void createPatients(String accessToken);
 }

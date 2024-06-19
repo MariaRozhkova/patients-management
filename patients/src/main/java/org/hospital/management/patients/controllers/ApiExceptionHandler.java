@@ -18,6 +18,9 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+/**
+ * A class with exceptions handling.
+ */
 @ControllerAdvice
 @Slf4j
 @RequiredArgsConstructor
