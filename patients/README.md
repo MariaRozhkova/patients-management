@@ -43,7 +43,6 @@ Link to Swagger UI, which can be used to invoke and explore API: <br />
 `http://localhost:8083/swagger-ui/index.html#`
 
 ## Postman
-Project contains 2 files in folder `./postman-collections`. They can be imported in postman. 
-some env vars.
+Project contains 2 files in folder `./postman-collections`. They can be imported in postman.
 One file is a postman collection with APIs, another one is needed to import local postman 
 environment with specific variables.
