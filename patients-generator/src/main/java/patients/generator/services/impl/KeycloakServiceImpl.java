@@ -20,8 +20,9 @@ import patients.generator.services.KeycloakService;
 @RequiredArgsConstructor
 public class KeycloakServiceImpl implements KeycloakService {
 
+    private static final String KEYCLOAK_URL = "http://localhost:8080";
     private static final String KEYCLOAK_SERVICE_URL =
-        "http://localhost:8080/realms/PatientsManagementRealm/protocol/openid-connect/token";
+        KEYCLOAK_URL + "/realms/PatientsManagementRealm/protocol/openid-connect/token";
     private static final String CONTENT_TYPE_HEADER_NAME = "Content-type";
     private static final String CONTENT_TYPE_HEADER_VALUE = "application/x-www-form-urlencoded";
     private static final String CLIENT_ID = "patients-management-app";
