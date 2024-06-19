@@ -9,8 +9,11 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.hospital.management.patients.dtos.PaginationResponse;
+import org.hospital.management.patients.dtos.PaginationTokenDto;
 import org.hospital.management.patients.dtos.PatientCreateDto;
 import org.hospital.management.patients.dtos.PatientDto;
 import org.hospital.management.patients.entities.Patient;
@@ -24,6 +27,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 class PatientServiceImplTest {
@@ -33,6 +39,8 @@ class PatientServiceImplTest {
     private static final LocalDateTime BIRTH_DATE = LocalDateTime.now();
     private static final LocalDateTime CREATED_AT = LocalDateTime.now();
     private static final String UPDATED_NAME = "name";
+    private static final int PAGE_SIZE = 2;
+    private static final String NEXT_PAGE_TOKEN = "token";
 
     @Mock
     private PatientRepository patientRepository;
@@ -43,8 +51,50 @@ class PatientServiceImplTest {
     @Mock
     private PageTokenService pageTokenService;
 
+    @Mock
+    private Page<Patient> patientsPage;
+
     @InjectMocks
     private PatientServiceImpl patientService;
+
+    @Test
+    void shouldFindPaginatedPatientsWhenPageTokenIsNull() {
+        var patient = preparePatient(NAME);
+        var patientDto = preparePatientDto(NAME);
+        var sort = Sort.by(Patient.Fields.createdAt, Patient.Fields.id);
+        var pageable = PageRequest.of(0, PAGE_SIZE, sort);
+
+        when(patientRepository.findAll(pageable)).thenReturn(patientsPage);
+        when(patientsPage.getContent()).thenReturn(List.of(patient));
+        when(modelMapper.map(patient, PatientDto.class)).thenReturn(patientDto);
+
+        var actualResult = patientService.findAll(null, PAGE_SIZE);
+
+        var expectedPaginationResponse = new PaginationResponse<>(List.of(patientDto), null);
+        assertEquals(expectedPaginationResponse, actualResult);
+        verifyNoInteractions(pageTokenService);
+    }
+
+    @Test
+    void shouldFindPaginatedPatients() {
+        var patient = preparePatient(NAME);
+        var patientDto = preparePatientDto(NAME);
+
+        var paginationTokenDto = new PaginationTokenDto(ID, CREATED_AT);
+        when(pageTokenService.decode(NEXT_PAGE_TOKEN)).thenReturn(paginationTokenDto);
+        when(patientRepository.findAllPageable(CREATED_AT, ID, PAGE_SIZE))
+            .thenReturn(List.of(patient, patient));
+        when(modelMapper.map(patient, PatientDto.class)).thenReturn(patientDto);
+        when(pageTokenService.encode(paginationTokenDto)).thenReturn(NEXT_PAGE_TOKEN);
+
+        var actualResult = patientService.findAll(NEXT_PAGE_TOKEN, PAGE_SIZE);
+
+        var expectedPaginationResponse = new PaginationResponse<>(
+            List.of(patientDto, patientDto),
+            NEXT_PAGE_TOKEN
+        );
+        assertEquals(expectedPaginationResponse, actualResult);
+    }
 
     @Test
     void shouldFindPatientById() {
