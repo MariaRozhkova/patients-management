@@ -32,18 +32,18 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PaginationResponse<PatientDto> findAll(String nextPageToken, int pageSize) {
-        var sort = Sort.by(Patient.Fields.createdAt, Patient.Fields.id);
-        var pageable = PageRequest.of(0, pageSize, sort);
         List<Patient> patients;
         if (StringUtils.isBlank(nextPageToken)) {
+            var sort = Sort.by(Patient.Fields.createdAt, Patient.Fields.id);
+            var pageable = PageRequest.of(0, pageSize, sort);
             patients = patientRepository.findAll(pageable).getContent();
         } else {
             var nextPageTokenDto = pageTokenService.decode(nextPageToken);
             patients = patientRepository
-                .findAllByCreatedAtGreaterThanEqualAndIdGreaterThan(
+                .findAllPageable(
                     nextPageTokenDto.date(),
                     nextPageTokenDto.id(),
-                    pageable
+                    pageSize
                 );
         }
 

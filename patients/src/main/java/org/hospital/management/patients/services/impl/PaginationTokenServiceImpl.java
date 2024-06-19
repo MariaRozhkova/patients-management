@@ -1,18 +1,19 @@
 package org.hospital.management.patients.services.impl;
 
 import com.google.gson.Gson;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import lombok.RequiredArgsConstructor;
 import org.hospital.management.patients.dtos.PaginationTokenDto;
 import org.hospital.management.patients.exceptions.IncorrectPaginationTokenException;
 import org.hospital.management.patients.services.PageTokenService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class PaginationTokenServiceImpl implements PageTokenService {
 
+    @Qualifier("paginationResponseGson")
     private final Gson gson;
 
     @Override
